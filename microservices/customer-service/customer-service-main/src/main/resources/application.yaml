@@ -9,12 +9,12 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: 1234
-    url: jdbc:postgresql://localhost:5432/microservice_db
+    password: 111999
+    url: jdbc:postgresql://localhost:5432/spring-microservice_db
   jackson:
     deserialization:
       fail-on-unknown-properties: true
   application:
-    name: microservice-lab
+    name: ite-project
 server:
-  port: 9292
+  port: 9191
