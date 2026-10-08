@@ -1,6 +1,5 @@
 package kh.edu.istad.platform.customer.domain.usecase;
 
-import kh.edu.istad.common.domain.exception.CustomerDomainException;
 import kh.edu.istad.common.domain.valueobject.CustomerId;
 import kh.edu.istad.platform.customer.domain.dto.UpdateCustomerCommand;
 import kh.edu.istad.platform.customer.domain.entity.Customer;
@@ -14,25 +13,31 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class UpdateCustomerUseCase {
+
     private final CustomerRepository customerRepository;
     private final CustomerDomainService customerDomainService;
 
-    public CustomerUpdatedEvent execute(UpdateCustomerCommand command){
-        // TODO : I want to write something unhappen
+    public CustomerUpdatedEvent execute(UpdateCustomerCommand command) {
+
         // 1. Load the existing customer
         Customer customer = customerRepository.findById(
-                        new CustomerId(command.customerId()))
-                .orElseThrow(()-> new CustomerNotFoundException(command.customerId());
+                        new CustomerId(command.customerId())
+                )
+                .orElseThrow(
+                        () -> new CustomerNotFoundException(command.customerId())
+                );
 
-        //2. Update the names and create the event
+        // 2. Update customer and create domain event
         CustomerUpdatedEvent event = customerDomainService.updateCustomer(
                 customer,
                 command.familyName(),
                 command.givenName()
         );
 
-        //3. Save the update customer
+        // 3. Save the updated customer
         customerRepository.save(customer);
+
+        // 4. Return the domain event
         return event;
     }
 }
